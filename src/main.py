@@ -1,4 +1,4 @@
-from pylatex import Document, Command, NoEscape, Package
+from pylatex import Document, Command, NoEscape, Package, Subsection
 
 from introduction.introduction import create_introduction
 
@@ -9,7 +9,6 @@ def main():
     doc.preamble.append(Package("amsmath"))
     doc.preamble.append(Package("amssymb"))
     doc.preamble.append(Package("indentfirst"))
-
 
     doc.append(NoEscape(r"\renewcommand\bibname{References}"))
 
@@ -23,6 +22,10 @@ def main():
 
     create_introduction()
     doc.append(Command("input", "introduction/introduction"))
+
+    literature_overview = Subsection("Overview of the literature", numbering=False)
+    literature_overview.append(Command("input", "literature_overview/literature_overview"))
+    doc.append(literature_overview)
 
     doc.append(Command("bibliography", "main"))
     doc.append(Command("bibliographystyle", "plain"))

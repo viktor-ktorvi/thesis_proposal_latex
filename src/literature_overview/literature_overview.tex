@@ -1,0 +1,28 @@
+There exists a decent amount of literature on applying machine learning methods to the OPF problem.
+Because of their ability to generalize to multiple grid topologies, in this overview we'll focus on
+methods that utilize GNNs. Of those works, however, most suffer from one or multiple reoccurring problems -
+incomparable dataset use, lack of interpretable metrics and inconsistent definitions of input and output
+variables of the problem.
+
+There exists a noticeable lack of a benchmark dataset and for that reason the authors
+of each work generate their own dataset by taking some common example grid topology
+and randomly augmenting the grid
+parameters~\cite{liu2022topology, liu2021graph, yang2022ac, owerko2020optimal, owerko2022unsupervised}
+or by modelling the inclusion of renewable energy sources into those same grid
+topologies~\cite{surani2023graph, gao2023physics}.
+The fact that every work uses a different dataset makes results difficult to compare.
+It's worth mentioning that generating datasets based on models of the power grid is likely a legitimate approach, given the lack of accessible real world power grid data.
+Power grid datasets, if they exist, are often kept private by the power system operators.
+Additionally, the amount of metering in distribution grids is very low so most of the time even
+system operators don't have access to the real world data.
+Another noticeable shortcoming of most works is a lack of interpretable metrics of
+the quality of the OPF solution which would be very important if you were to convince operators
+to start using such methods.
+Often what is presented are just the MSE or MAE used to train
+the networks~\cite{gao2023physics, liu2022topology, liu2021graph}, leaving a lot of room to improve the metrics.
+Thirdly, even though some works~\cite{owerko2020optimal, owerko2022unsupervised} take
+in the entire state of the grid(the matrix $[\boldsymbol{P} \ \boldsymbol{Q} \ \boldsymbol{V} \ \boldsymbol{\theta}]$),
+none of them try to predict the entire state of the grid, thus leaving some information unknown.
+Instead, some works predict only the node level optimal costs~\cite{surani2023graph, liu2021graph},
+others just the active powers and/or voltage magnitudes.
+Finally, all of these works use 1-WL bound GNNs leaving room to research the application of higher order methods.
