@@ -24,10 +24,10 @@
 
 ## Literature overview
 
-- [ ] Take a look at the previous literature overview and refine it
-    - [ ] Current literature doesn't use standard benchmark datasets with fixed splits
-    - [ ] The use uninterpretable metrics making it hard to interpret their results
-    - [ ] They usually don't predict the entire state of the grid
+- [x] Take a look at the previous literature overview and refine it
+    - [x] Current literature doesn't use standard benchmark datasets with fixed splits
+    - [x] The use uninterpretable metrics making it hard to interpret their results
+    - [x] They usually don't predict the entire state of the grid
 
 ## Methodology
 
