@@ -17,6 +17,10 @@ def create_introduction():
 
     introduction.append(Command("input", "introduction/basic_problem_statement"))
     introduction.append(Command("input", "introduction/motivation"))
+
+    introduction.append(NewLine())
+    introduction.append(NewLine())
+
     introduction.append(Command("input", "introduction/mathematical_formulation"))
 
     introduction.append(NewLine())

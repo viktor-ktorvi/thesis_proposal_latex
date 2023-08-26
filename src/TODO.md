@@ -19,6 +19,7 @@
         - [ ] Optimality
     - [ ] ML methods
         - [ ] Single-topology VS multi-topology
+        - [ ] Supervised VS unsupervised
         - [ ] Evidence that 1-WL bound nets underperform
         - [ ] JK helps which leads me to believe that adding
           farther away features will help
@@ -26,6 +27,9 @@
 ## Literature overview
 
 - [ ] Take a look at the previous literature overview and refine it
+    - [ ] Current literature doesn't use standard benchmark datasets with fixed splits
+    - [ ] The use uninterpretable metrics making it hard to interpret their results
+    - [ ] They usually don't predict the entire state of the grid
 
 ## Methodology
 
