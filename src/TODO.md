@@ -14,12 +14,10 @@
     - [x] Why energy system operators need to solve it
     - [x] How is it solved today
 - [ ] What are the challenges
-    - [ ] Conventional methods
-        - [ ] Speed
-        - [ ] Optimality
     - [ ] ML methods
-        - [ ] Single-topology VS multi-topology
-        - [ ] Supervised VS unsupervised
+        - [x] Single-topology VS multi-topology
+        - [x] Dataset generation
+        - [x] Supervised VS unsupervised
         - [ ] Evidence that 1-WL bound nets underperform
         - [ ] JK helps which leads me to believe that adding
           farther away features will help

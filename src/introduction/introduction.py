@@ -33,5 +33,7 @@ def create_introduction():
 
     introduction.append(node_type_mask_table(Marker("nodemasks", prefix="tab")))
 
+    introduction.append(Command("input", "introduction/ml_methods"))
+
     with open(os.path.join(current_directory, "introduction.tex"), "w") as f:
         f.write(introduction.dumps())

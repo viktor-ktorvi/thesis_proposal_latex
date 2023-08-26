@@ -1,0 +1,23 @@
+Machine learning methods for solving OPF aim to learn a heuristic which produces
+a solution of sufficient quality while being much faster than conventional solvers.
+These methods could be trained in one of two ways - supervised and unsupervised.
+In both cases a power system operator would generate a dataset of power grids with
+supply tasks representative of their intended use case.
+This may include variations on the generation and demand profiles in both normal
+and extreme grid conditions as well as variations of the grid topology representing
+new users being connected to the grid, line expansion or disconnections from the
+grid.
+In the supervised learning case, a conventional solver would be run for each sample
+in the dataset, necessitating a high upfront computational cost and a machine
+learning model would then be trained on a regression task.
+On the other hand, in an unsupervised setting, a machine learning model could be
+trained to minimize, for example, the lagrangian of the OPF problem thereby,
+if successful, circumventing the high upfront computational cost of solving the
+dataset which is a more desirable outcome.
+Of course, both methods still require a high upfront computational cost of
+training, but given enough usage of the model during its lifetime, that cost
+would be outweighed by the time saved on not having to use conventional solvers.
+Graph neural networks(GNNs) naturally lend themselves to the OPF problem since it
+lives on a graph, they can incorporate graph structure and line attributes and can
+handle datasets with multiple topologies, whereas multilayer perceptrons(MLPs)
+can only be applied to single-topology datasets.
