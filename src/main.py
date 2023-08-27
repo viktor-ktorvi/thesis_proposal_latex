@@ -1,6 +1,7 @@
 from pylatex import Document, Command, NoEscape, Package, Subsection
 
 from introduction.introduction import create_introduction
+from methodology.methodology import create_methodology
 
 
 def main():
@@ -26,6 +27,9 @@ def main():
     literature_overview = Subsection("Overview of the literature", numbering=False)
     literature_overview.append(Command("input", "literature_overview/literature_overview"))
     doc.append(literature_overview)
+
+    create_methodology()
+    doc.append(Command("input", "methodology/methodology"))
 
     doc.append(Command("bibliography", "main"))
     doc.append(Command("bibliographystyle", "plain"))

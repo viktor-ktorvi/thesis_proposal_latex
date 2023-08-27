@@ -1,0 +1,66 @@
+\subsection*{Metrics}
+To improve the interpretability of the metrics used to assess the quality of the achieved OPF solution
+we introduce with regard to equality constraints, inequality constraints and objective function.
+The metrics categories are given in descending order with respect to importance; equality constraints are
+the most important because the solution must obey the laws of physics; then come the inequality constraints
+representing the technical (and regulatory) limitations which must be fulfilled for the proper functioning
+of the power grid; finally, the objective function value comes last in priority because only when the
+first two constraints are fulfilled can we start thinking about minimizing costs.
+
+\subsubsection*{Equality constraints}
+From the problem formulation~\ref{eq:opf_formulation} we can derive the active and reactive power errors:
+
+\begin{equation}
+    \label{eq:active_power_error}
+    \Delta P = P - \Re\left\{ \complexpower \right\}
+\end{equation}
+
+\begin{equation}
+    \label{eq:reactive_power_error}
+    \Delta Q = Q - \Im\left\{ \complexpower \right\}
+\end{equation}
+
+\noindent It will be useful to look at absolute values of these errors in the per unit system and, additionally, we'd like to get an aggregate value
+for each on the entire validation/test dataset, so we will look at the average and maximum value
+per node since we don't want the metric to depend on the number of nodes in a grid.
+We define the mean and maximum absolute power error as:
+
+\newcommand{\abs}[1]{\Bigl| #1 \Bigr|}
+
+\newcommand{\expectedabsvalue}[1]{\mathbb{E} \ \abs{\Delta #1}}
+
+\newcommand{\expectedrelativeabsvalue}[1]{\mathbb{E} \ \abs{\frac{\Delta #1}{#1}}}
+
+
+\begin{equation}
+    \label{eq:mean_absolute_power_error}
+    \expectedabsvalue{X} = \frac{1}{M} \sum_i^{M} \abs{\Delta X_i}
+\end{equation}
+
+\begin{equation}
+    \label{eq:max_absolute_power_error}
+    \max \ \abs{\Delta X} = \max_i{\abs{\Delta X_i}} \quad i \in \{0, M - 1\}
+\end{equation}
+
+\noindent where $X \in \{P, Q\}$ and $M$ is the number of nodes in a dataset. \\
+
+Metrics~\ref{eq:mean_absolute_power_error} and~\ref{eq:max_absolute_power_error} still
+have the issue that their values are dependent on the scale of the powers in a grid, for example,
+when looking at two nodes, one representing a household and the other a power plant, the same
+value of the absolute power error can represent a high constraint violation to the household
+node but a negligible violation to the power plant.
+It is for this reason that we introduce the mean and maximum relative absolute power error representing
+the ratio between the error and value at the node, thus getting rid of the problem of scale:
+
+\begin{equation}
+    \label{eq:mean_relative_absolute_power_error}
+    \expectedrelativeabsvalue{X} = \frac{1}{M} \sum_i^{M} \abs{\frac{\Delta X_i}{X_i}}
+\end{equation}
+
+\begin{equation}
+    \label{eq:max_relative_absolute_power_error}
+    \max \ \abs{\frac{\Delta X}{X}} = \max_i{\abs{\frac{\Delta X_i}{X_i}}} \quad i \in \{0, M - 1\}
+\end{equation}
+
+\subsubsection*{Inequality constraints}
+\subsubsection*{Objective function}
