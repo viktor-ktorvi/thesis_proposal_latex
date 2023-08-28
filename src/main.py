@@ -10,6 +10,9 @@ def main():
     doc.preamble.append(Package("amsmath"))
     doc.preamble.append(Package("amssymb"))
     doc.preamble.append(Package("indentfirst"))
+    doc.preamble.append(Package("makecell"))
+    doc.preamble.append(NoEscape(r"\setcellgapes{5pt}"))
+    doc.preamble.append(NoEscape(r"\makegapedcells"))
 
     doc.append(NoEscape(r"\renewcommand\bibname{References}"))
 

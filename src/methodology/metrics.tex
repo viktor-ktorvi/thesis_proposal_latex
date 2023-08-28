@@ -1,6 +1,6 @@
 \subsection*{Metrics}
 To improve the interpretability of the metrics used to assess the quality of the achieved OPF solution
-we introduce with regard to equality constraints, inequality constraints and objective function.
+we introduce metrics with regard to: equality constraints, inequality constraints and objective function.
 The metrics categories are given in descending order with respect to importance; equality constraints are
 the most important because the solution must obey the laws of physics; then come the inequality constraints
 representing the technical (and regulatory) limitations which must be fulfilled for the proper functioning
@@ -12,12 +12,12 @@ From the problem formulation~\ref{eq:opf_formulation} we can derive the active a
 
 \begin{equation}
     \label{eq:active_power_error}
-    \Delta P = P - \Re\left\{ \complexpower \right\}
+    \Delta \boldsymbol{P} = \boldsymbol{P} - \Re\left\{ \complexpower \right\}
 \end{equation}
 
 \begin{equation}
     \label{eq:reactive_power_error}
-    \Delta Q = Q - \Im\left\{ \complexpower \right\}
+    \Delta \boldsymbol{Q} = \boldsymbol{Q} - \Im\left\{ \complexpower \right\}
 \end{equation}
 
 \noindent It will be useful to look at absolute values of these errors in the per unit system and, additionally, we'd like to get an aggregate value
@@ -25,16 +25,18 @@ for each on the entire validation/test dataset, so we will look at the average a
 per node since we don't want the metric to depend on the number of nodes in a grid.
 We define the mean and maximum absolute power error as:
 
-\newcommand{\abs}[1]{\Bigl| #1 \Bigr|}
+\newcommand{\abs}[1]{\left| #1 \right|}
 
-\newcommand{\expectedabsvalue}[1]{\mathbb{E} \ \abs{\Delta #1}}
+\newcommand{\expectedvalue}[1]{\mathbb{E} \left\{#1\right\}}
 
-\newcommand{\expectedrelativeabsvalue}[1]{\mathbb{E} \ \abs{\frac{\Delta #1}{#1}}}
+\newcommand{\expectedabsvalue}[1]{\expectedvalue{\abs{#1}}}
+
+\newcommand{\expectedrelativeabsvalue}[1]{\expectedabsvalue{\frac{\Delta #1}{#1}}}
 
 
 \begin{equation}
     \label{eq:mean_absolute_power_error}
-    \expectedabsvalue{X} = \frac{1}{M} \sum_i^{M} \abs{\Delta X_i}
+    \expectedabsvalue{\Delta X} = \frac{1}{M} \sum_i^{M} \abs{\Delta X_i}
 \end{equation}
 
 \begin{equation}
