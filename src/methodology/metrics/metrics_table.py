@@ -1,53 +1,32 @@
+from dataclasses import dataclass
+from typing import List
+
 from pylatex import Table, Tabular, NoEscape, Label, Marker, Command
 
 
-def create_metrics_table(marker: Marker):
-    metric_tabular = Tabular("|c|c|c|")
+@dataclass
+class TableEntry:
+    name: str
+    symbol: str
+    expression: str
+    variables: str
+    unit: str
+
+
+def create_metrics_table(header: List[str], entries: List[TableEntry], caption: str, marker: Marker):
+    metric_tabular = Tabular("|" + "".join("c|" for _ in range(len(header))))
     metric_tabular.add_hline()
-    metric_tabular.add_row("Name", "Mathematical expression", "Unit")
+    metric_tabular.add_row(*header)
     metric_tabular.add_hline()
 
-    def error(symbol: str) -> str:
-        return f"\\Delta {symbol}"
-
-    def absolute(symbol: str) -> str:
-        return f"\\left|{symbol}\\right|"
-
-    def relative(symbol: str) -> str:
-        return r"\displaystyle" + Command("frac", [NoEscape(error(symbol)), NoEscape(symbol)]).dumps()
-
-    def math(symbol: str) -> str:
-        return f"${symbol}$"
-
-    names = [
-        "absolute active power error",
-        "absolute reactive power error",
-        "absolute relative active power error",
-        "absolute relative reactive power error",
-    ]
-
-    expressions = [
-        math(absolute(error("P"))),
-        math(absolute(error("Q"))),
-        math(absolute(relative("P"))),
-        math(absolute(relative("Q")))
-    ]
-
-    units = [
-        "p.u.",
-        "p.u.",
-        r"$\cdot$",
-        r"$\cdot$"
-    ]
-
-    for i in range(len(names)):
-        metric_tabular.add_row(names[i], NoEscape(expressions[i]), NoEscape(units[i]))
+    for entry in entries:
+        fields = [NoEscape(field) for field in [entry.name, entry.symbol, entry.expression, entry.variables, entry.unit]]
+        metric_tabular.add_row(*fields)
         metric_tabular.add_hline()
 
-    table = Table(position="h")
-    # table.append(NoEscape(r"\renewcommand{\arraystretch}{2}"))
+    table = Table(position="H")
     table.append(NoEscape(r'\centering'))
     table.append(metric_tabular)
-    table.add_caption("Proposed metrics.")
+    table.add_caption(caption)
     table.append(Label(marker))
     return table
