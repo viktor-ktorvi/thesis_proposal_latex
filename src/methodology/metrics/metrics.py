@@ -35,6 +35,7 @@ def create_metrics():
     current_directory = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
     metrics = Subsection("Metrics", numbering=False)
+    metrics.append("TODO elaborate")
     metrics.append(Command("input", "methodology/metrics/metrics_with_regards_to"))
 
     header = ["Name", "Symbol", "Math expression", "Variables", "Unit"]
