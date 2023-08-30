@@ -16,6 +16,6 @@ def node_type_mask_table(marker: Marker) -> Table:
     table = Table(position="h")
     table.append(NoEscape(r'\centering'))
     table.append(node_type_masks)
-    table.add_caption("Value mask in relation to the node type.")
+    table.add_caption("Attribute value masks in relation to the node type.")
     table.append(Label(marker))
     return table
