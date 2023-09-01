@@ -35,23 +35,24 @@ def create_metrics():
     current_directory = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
     metrics = Subsection("Metrics", numbering=False)
-    metrics.append("TODO elaborate")
+    metrics.append(Command("input", "methodology/metrics/metric_commands"))
     metrics.append(Command("input", "methodology/metrics/metrics_with_regards_to"))
 
     header = ["Name", "Symbol", "Math expression", "Variables", "Unit"]
 
     equality_constraints = Subsubsection("Equality constrains", numbering=False)
+    equality_constraints.append(Command("input", "methodology/metrics/equality_constraints"))
     equality_constraints.append(
         create_metrics_table(
             header=header,
             entries=[
                 TableEntry(name="absolute error",
-                           symbol=math(rf"\Delta_{{abs}} {math_var}"),
+                           symbol=math(rf"\absoluteerror{{{math_var}}}"),
                            expression=math(absolute(error(math_var))),
                            variables=math(rf"{math_var} \in \left\{{P, Q\right\}}"),
                            unit="p.u."),
                 TableEntry(name="relative absolute error",
-                           symbol=math(rf"\Delta_{{abs}}^{{rel}} {math_var}"),
+                           symbol=math(rf"\relativeabsoluteerror{{{math_var}}}"),
                            expression=math(frac(absolute(rf"\Delta {math_var}"), absolute(math_var))),
                            variables=math(rf"{math_var} \in \left\{{P, Q\right\}}"),
                            unit=math(r"\cdot"))

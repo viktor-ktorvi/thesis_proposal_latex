@@ -1,0 +1,32 @@
+The absolute error $\absoluteerror{X}$, defined in table~\ref{tab:equalityconstraintmetrics},
+is simply the absolute difference between the power at the given node and
+the in- and out-flowing powers.
+The difference follows from the power flow equations embedded in the equality
+constraints defined in the system of equations~\ref{eq:opf_formulation}:
+
+\begin{equation}
+    \label{eq:active_power_error}
+    \Delta \boldsymbol{P} = \boldsymbol{P} - \Re\left\{ \complexpower \right\}
+\end{equation}
+
+\begin{equation}
+    \label{eq:reactive_power_error}
+    \Delta \boldsymbol{Q} = \boldsymbol{Q} - \Im\left\{ \complexpower \right\}
+\end{equation}
+
+The main issue with this metric is that it's not scale invariant i.e.\
+it's not the same if the same value of the metric is achieved on a
+node representing a power plant and one representing a single house.
+It is for that reason that we introduce the relative absolute error
+$\relativeabsoluteerror{X}$, also defined in table~\ref{tab:equalityconstraintmetrics},
+which takes the absolute error at the given node and divides it with
+the absolute value of the power of the node, thus making it scale
+invariant.
+The relative absolute error still isn't perfect because it's
+overly sensitive to nodes with lower powers, for example,
+if the power at a node is really close to zero, even a
+negligible absolute error would blow up to produce a high
+value of the relative error, so, while analyzing, it makes sense to mainly
+look at $\relativeabsoluteerror{X}$ while keeping an eye on
+$\absoluteerror{X}$ as a sanity check, as well as being aware of the
+orders of magnitude of the powers in the grid.
