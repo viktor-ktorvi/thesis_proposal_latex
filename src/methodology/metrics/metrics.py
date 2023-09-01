@@ -90,6 +90,7 @@ def create_metrics():
     metrics.append(inequality_constraints)
 
     objective_function = Subsubsection("Objective function", numbering=False)
+    objective_function.append(Command("input", "methodology/metrics/objective_function"))
     objective_function.append(
         create_metrics_table(
             header=["Name", "Symbol", "Math expression", "Unit"],
@@ -100,7 +101,7 @@ def create_metrics():
                            unit=math(frac("currency", "h"))),
                 TableEntry(name="relative cost",
                            symbol=math(r"C^{rel}"),
-                           expression=math(frac(r"\objectivefunction", r"C_{target}")),
+                           expression=math(frac(r"C", r"C_{target}")),
                            unit=math(r"\cdot"))
             ],
             caption="Metrics with regard to the objective function",
