@@ -42,6 +42,7 @@ def create_metrics():
 
     equality_constraints = Subsubsection("Equality constrains", numbering=False)
     equality_constraints.append(Command("input", "methodology/metrics/equality_constraints"))
+
     equality_constraints.append(
         create_metrics_table(
             header=header,
@@ -53,7 +54,7 @@ def create_metrics():
                            unit="p.u."),
                 TableEntry(name="relative absolute error",
                            symbol=math(rf"\relativeabsoluteerror{{{math_var}}}"),
-                           expression=math(frac(absolute(rf"\Delta {math_var}"), absolute(math_var))),
+                           expression=math(frac(rf"\absoluteerror{{{math_var}}}", absolute(math_var))),
                            variables=math(rf"{math_var} \in \left\{{P, Q\right\}}"),
                            unit=math(r"\cdot"))
             ],
@@ -64,18 +65,20 @@ def create_metrics():
     metrics.append(equality_constraints)
 
     inequality_constraints = Subsubsection("Inequality constrains", numbering=False)
+    inequality_constraints.append(Command("input", "methodology/metrics/inequality_constraints"))
+
     inequality_constraints.append(
         create_metrics_table(
             header=header,
             entries=[
                 TableEntry(name="upper bound error",
-                           symbol=math(rf"\Delta_{{max}} {math_var}"),
+                           symbol=math(rf"\uppererror{{{math_var}}}"),
                            expression=maximum(f"0, {math_var} - {math_var}_{{max}}"),
                            variables=math(rf"{math_var} \in \left\{{P, Q, V\right\}}"),
                            unit="p.u."),
 
                 TableEntry(name="lower bound error",
-                           symbol=math(rf"\Delta_{{min}} {math_var}"),
+                           symbol=math(rf"\lowererror{{{math_var}}}"),
                            expression=minimum(f"0, {math_var} - {math_var}_{{min}}"),
                            variables=math(rf"{math_var} \in \left\{{P, Q, V\right\}}"),
                            unit="p.u.")
