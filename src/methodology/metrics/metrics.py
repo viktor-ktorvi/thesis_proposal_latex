@@ -100,7 +100,7 @@ def create_metrics():
                            expression=math(r"\objectivefunction"),
                            unit=math(frac("currency", "h"))),
                 TableEntry(name="relative cost",
-                           symbol=math(r"C^{rel}"),
+                           symbol=math(r"\relativecost"),
                            expression=math(frac(r"C", r"C_{target}")),
                            unit=math(r"\cdot"))
             ],
