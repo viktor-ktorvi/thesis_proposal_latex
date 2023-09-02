@@ -14,6 +14,7 @@ def main():
     doc.preamble.append(Package("makecell"))
     doc.preamble.append(NoEscape(r"\setcellgapes{5pt}"))
     doc.preamble.append(NoEscape(r"\makegapedcells"))
+    doc.preamble.append(Package("xcolor"))
 
     doc.append(NoEscape(r"\renewcommand\bibname{References}"))
 
