@@ -1,16 +1,26 @@
 To analyze the current state of applying graph neural networks to
-OPF in table \textcolor{red}{REF} we provide the results of training four models, each having access to
+OPF, in table~\ref{tab:resultstableref} we provide the results of training three models on a single-topology dataset, each having access to
 wider neighbourhood information.
 The details of how the models were selected and trained can be found in \textcolor{red}{APPENDIX}.
 Intuitively, to solve the conservation of energy equations, one would need information on the
 state of all the nodes in the grid.
 Doing this for single-topology datasets is simple as we only need to concatenate the
-features of each node into a vector and fit, for instance, a linear model to it and this does, as seen in
-table \textcolor{red}{REF}, solve the problem with a satisfactory degree of accuracy.
-However, if we want train models on a multi-topology dataset, which is a real world use case,
-this approach will not work as the classical machine learning algorithms cannot work with
+features of each node into a vector and fit, for instance, a linear model.
+And this does, as seen in table \textcolor{red}{REF},
+solve the problem with a satisfactory degree of accuracy.
+However, if we want to train models on a multi-topology dataset, which is a real world use case,
+this approach would not work as the classical machine learning algorithms cannot work with
 this data due to the varying number of features in the entire graph.
 It is for this reason that we have to resort to graph learning approaches.
-In the same table, we see the effects of applying: a linear model to each node separately;
-a GCN which incorporates the local neighbourhood of each node; and a GCN with jumping
-knowledge which enables the GCN to have a bit more depth and thus reach more nodes.
+In the same table, we see the effects of applying:
+a GCN which incorporates the local neighbourhood of each node; a GCN with jumping
+knowledge which enables the GCN to have a bit more depth and thus reach more nodes;
+and a linear model which has access to the features of every node.
+We can see that, as expected, incorporating more and more neighbourhood information leads to
+smaller values of $\relativeabsoluteerror{P}$ and $\relativeabsoluteerror{Q}$.
+
+In this thesis, I propose to investigate the effectiveness of applying graph neural network
+architectures that can incorporate the wider neighbourhood information, for example,
+graph transformers and higher order GNNs.
+
+\textcolor{red}{Talk about the downsides of these approaches like the computational complexity of k-WL gnns}

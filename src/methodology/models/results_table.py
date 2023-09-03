@@ -142,7 +142,7 @@ def create_results_table() -> Table:
     sweep_infos = [
         SweepInfo(model_name="GCN", sweep_id="r4ised6c"),
         SweepInfo(model_name="GCN-JK", sweep_id="ur539u0i"),
-
+        SweepInfo(model_name=NoEscape("Linear_{global}"), sweep_id="8u6z7iw0")
     ]
 
     metric_dir = "val/"
