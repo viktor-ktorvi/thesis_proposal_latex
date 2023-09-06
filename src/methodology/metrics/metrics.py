@@ -110,7 +110,5 @@ def create_metrics():
     )
     metrics.append(objective_function)
 
-    metrics.append(NoEscape(r"\textcolor{red}{TODO} talk about aggregation"))
-
     with open(os.path.join(current_directory, "metrics.tex"), "w") as f:
         f.write(metrics.dumps())

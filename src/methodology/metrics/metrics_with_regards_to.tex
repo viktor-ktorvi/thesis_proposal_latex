@@ -2,10 +2,23 @@ To improve the interpretability of the metrics used to assess the quality of the
 we introduce a few metrics with regard to each of the constituents of the optimization problem:
 the equality constraints, the inequality constraints and the objective function.
 The metrics categories are given in descending order with respect to their importance.
-Equality constraints are the most important because the solution must obey the laws of physics;
+The equality constraints are the most important because the solution must obey the laws of physics;
 then come the inequality constraints representing the technical (and regulatory) limitations
 which must be fulfilled for the proper functioning of the power grid;
 finally, the objective function value comes last in priority because only when the
 first two constraints are fulfilled can we start thinking about minimizing costs.
 Since the following metrics can be applied to a set of physical variable in the grid,
 we will use the symbol $X$ to denote any variable in the specified set.
+
+
+One important issue that has to be addressed is what levels the metrics will be aggregated on and
+what functions will be used for that.
+Due to the fact that the value of the objective function achieved by the conventional solver is available
+on the grid level we aggregate the metrics related to the objective function on that level i.e. the
+grid/graph level, for the sake of comparison with the conventional solver.
+For all other metrics, we aggregate them on a node level so that they are not a function of the size of
+the grid.
+All the metrics will be aggregated in two says: firstly, using the mean value of a metric $m$, denoted
+by $\overline{m}$; secondly, using the minimum or maximum value of a metric $m$, denoted
+by $\min\left( m \right)$ and $\max\left( m \right)$, respectively, depending on whether the metric
+should be minimized or maximized.
