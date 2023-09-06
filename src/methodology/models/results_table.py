@@ -97,7 +97,7 @@ def get_contents(path: str,
             current_run_metric = run.summary[best_metric.key]
 
             # TODO could incorporate custom filters
-            if run.summary[metric_dir + "r2 score"] > 0.75:  # filter by R2 score cause the pf errors can be low without anything being learned
+            if run.summary[metric_dir + "r2 score"] > 0.95:  # filter by R2 score cause the pf errors can be low without anything being learned
                 # compare and keep the better one
                 if best_metric.value is None:
                     best_metric.value = current_run_metric
@@ -142,7 +142,7 @@ def create_results_table() -> Table:
     sweep_infos = [
         SweepInfo(model_name="GCN", sweep_id="r4ised6c"),
         SweepInfo(model_name="GCN-JK", sweep_id="ur539u0i"),
-        SweepInfo(model_name=NoEscape("Linear_{global}"), sweep_id="8u6z7iw0")
+        SweepInfo(model_name=NoEscape("Linear" + math("_{global}")), sweep_id="8u6z7iw0")
     ]
 
     metric_dir = "val/"
