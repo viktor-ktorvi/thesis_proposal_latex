@@ -1,4 +1,4 @@
-from pylatex import Document, Command, NoEscape, Package, Subsection
+from pylatex import Document, Command, NoEscape, Package, Subsection, Section, NewPage
 
 from introduction.introduction import create_introduction
 from methodology.methodology import create_methodology
@@ -15,6 +15,9 @@ def main():
     doc.preamble.append(NoEscape(r"\setcellgapes{5pt}"))
     doc.preamble.append(NoEscape(r"\makegapedcells"))
     doc.preamble.append(Package("xcolor"))
+    doc.preamble.append(Package("circuitikz"))
+    doc.preamble.append(Package("yhmath"))
+    # doc.preamble.append(Command("usetikzlibrary", ["arrows", "positioning", "shapes.geometric", "calc"]))
 
     doc.append(NoEscape(r"\renewcommand\bibname{References}"))
 
@@ -33,11 +36,16 @@ def main():
     literature_overview.append(Command("input", "literature_overview/literature_overview"))
     doc.append(literature_overview)
 
-    create_methodology()
+    # create_methodology()
     doc.append(Command("input", "methodology/methodology"))
 
     doc.append(Command("bibliography", "main"))
     doc.append(Command("bibliographystyle", "plain"))
+
+    doc.append(NewPage())
+    doc.append(Command("appendix"))
+    doc.append(Section("Appendix A", numbering=False))
+    doc.append(Command("input", "appendix/model_diagram"))
 
     with open("main.tex", "w") as f:
         f.write(doc.dumps())

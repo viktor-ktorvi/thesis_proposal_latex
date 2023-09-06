@@ -1,0 +1,63 @@
+\documentclass[tikz,border=3.14mm]{standalone}
+\usetikzlibrary{arrows,positioning,shapes.geometric, calc}
+\usepackage{amsmath}
+\usepackage{circuitikz}
+\usepackage{yhmath}
+
+\begin{document}
+
+\newcommand{\pqva}{\left[ \boldsymbol{P} \ \boldsymbol{Q} \ \boldsymbol{V} \ \boldsymbol{\theta}\right]}
+\newcommand{\approxpqva}{\left[ \widehat{\boldsymbol{P}} \ \widehat{\boldsymbol{Q}} \ \widehat{\boldsymbol{V}} \ \widehat{\boldsymbol{\theta}}\right]}
+
+\begin{tikzpicture}[
+    >=stealth,
+    node distance=4cm,
+    block/.style={draw, fill=white, rectangle,
+        minimum height=4em},
+    sum/.style={draw, fill=white, circle},
+    prod/.style={draw, fill=white, circle}
+]
+
+
+\node (input) {};
+\node[block, right of=input, align=center] (input_scaler) {Input \\ Standard \\ Scaler};
+\node[prod] at ($(input_scaler)!0.5!(input)$) (input_product) {$\times$};
+\node[below of=input] (mask) {};
+
+\node[block, right=1cm of input_scaler] (gnn) {GNN};
+\node[block, right=1cm of gnn] (linear) {Linear};
+\node[block, right=1cm of linear, align=center] (output_scaler) {Inverse \\ Output \\ Standard \\ Scaler};
+
+\node[sum, right of=output_scaler] (sum) {+};
+\node[prod] at ($(output_scaler)!0.5!(sum)$) (output_product) {$\times$};
+
+\node[right of=sum] (approx) {};
+
+\node[not port, below of=input_scaler](not_mask){};
+
+
+\draw[->] (input) -- node[above, pos=0] {$\pqva$} (input_product);
+
+\draw[->] (mask) -- node[above, pos=0] {mask} ++ ($(input_product)$) node(split){} -- (not_mask) -| (output_product);
+
+
+\draw[->] (split.center) -- (input_product);
+
+\draw[->] (input_product) -- (input_scaler);
+
+\draw [->] (input_product) -- ++ (0,+2) -| (sum);
+
+\draw[->] (input_scaler) -- (gnn);
+\draw[->] (gnn) -- (linear);
+\draw[->] (linear) -- (output_scaler);
+
+\draw[->] (output_scaler) -- (output_product);
+\draw[->] (output_product) -- (sum);
+\draw[->] (sum) -- node[above] {$\approxpqva$} (approx);
+
+
+
+
+
+\end{tikzpicture}
+\end{document}
