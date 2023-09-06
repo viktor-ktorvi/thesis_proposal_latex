@@ -17,7 +17,6 @@ def main():
     doc.preamble.append(Package("xcolor"))
     doc.preamble.append(Package("circuitikz"))
     doc.preamble.append(Package("yhmath"))
-    # doc.preamble.append(Command("usetikzlibrary", ["arrows", "positioning", "shapes.geometric", "calc"]))
 
     doc.append(NoEscape(r"\renewcommand\bibname{References}"))
 
@@ -36,7 +35,7 @@ def main():
     literature_overview.append(Command("input", "literature_overview/literature_overview"))
     doc.append(literature_overview)
 
-    # create_methodology()
+    create_methodology()
     doc.append(Command("input", "methodology/methodology"))
 
     doc.append(Command("bibliography", "main"))
