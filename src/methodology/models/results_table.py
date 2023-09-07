@@ -26,13 +26,22 @@ def results_table(header: List[str],
     tabular.add_row(*header)
     tabular.add_hline()
 
-    for i in range(len(metric_symbols)):
-        contents = [f"{table_contents[i, j]:.{num_decimals}f}" for j in range(table_contents.shape[1])]
-        for j in range(len(contents)):
-            if table_contents_mask[i, j]:
-                contents[j] = bold(contents[j])
+    def sci_notation(number, sig_fig=2):
+        ret_string = "{0:.{1:d}e}".format(number, sig_fig)
+        a, b = ret_string.split("e")
+        # remove leading "+" and strip leading zeros
+        b = int(b)
+        # return a + " * 10^" + str(b)
+        return rf"{a} \cdot 10^{{{str(b)}}}"
 
-        tabular.add_row(NoEscape(metric_symbols[i]), *contents)
+    for i in range(len(metric_symbols)):
+        contents = [sci_notation(table_contents[i, j], sig_fig=num_decimals) for j in range(table_contents.shape[1])]
+        for j in range(len(contents)):
+            if table_contents_mask[i, j]:  # contents[j] = bold(contents[j])
+
+                contents[j] = rf"\boldsymbol{{{contents[j]}}}"
+
+        tabular.add_row(NoEscape(metric_symbols[i]), *[NoEscape(math(content)) for content in contents])
         tabular.add_hline()
 
     table = Table(position="H")
@@ -175,7 +184,7 @@ def create_results_table() -> Table:
 
     metric_dir = "eval/"
 
-    num_decimals = 5
+    num_decimals = 2
 
     # TODO make a unique constant that ties the keys and symbols so that the chance of error is minimized
     # which metrics to fetch
