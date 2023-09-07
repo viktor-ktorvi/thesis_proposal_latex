@@ -90,22 +90,10 @@ def get_contents(path: str,
 
         best_metric = copy.deepcopy(main_metric)  # metric to choose run in sweep
 
-        for run in sweep.runs:
-            if run.state == "failed":
-                continue
+        get_best_run(sweep, best_metric, metric_dir, MetricFilter(name="r2 score", value=0.95, comparison="g"))
 
-            current_run_metric = run.summary[best_metric.key]
-
-            # TODO could incorporate custom filters
-            if run.summary[metric_dir + "r2 score"] > 0.95:  # filter by R2 score cause the pf errors can be low without anything being learned
-                # compare and keep the better one
-                if best_metric.value is None:
-                    best_metric.value = current_run_metric
-                    best_metric.run_id = run.id
-                else:
-                    if best_metric.compare(current_run_metric):
-                        best_metric.value = current_run_metric
-                        best_metric.run_id = run.id
+        if best_metric.run_id is None:
+            get_best_run(sweep, best_metric, metric_dir)
 
         sweep_info.best_run_id = best_metric.run_id
 
@@ -136,16 +124,56 @@ def get_contents(path: str,
     return table_contents, table_contents_mask
 
 
+@dataclass
+class MetricFilter:
+    name: str
+    value: float
+    comparison: str
+
+    def compare(self, other_value: float):
+
+        if self.comparison == "g":
+            return other_value > self.value
+
+        if self.comparison == "l":
+            return other_value < self.value
+
+        if self.comparison == "ge":
+            return other_value >= self.value
+
+        if self.comparison == "le":
+            return other_value <= self.value
+
+
+def get_best_run(sweep, best_metric: Metric, metric_dir: str, metric_filter: MetricFilter = None):
+    for run in sweep.runs:
+        if run.state == "failed":
+            continue
+
+        current_run_metric = run.summary[best_metric.key]
+
+        if metric_filter is None or metric_filter.compare(run.summary[metric_dir + metric_filter.name]):
+            # compare and keep the better one
+            if best_metric.value is None:
+                best_metric.value = current_run_metric
+                best_metric.run_id = run.id
+            else:
+                if best_metric.compare(current_run_metric):
+                    best_metric.value = current_run_metric
+                    best_metric.run_id = run.id
+
+
 def create_results_table() -> Table:
     path = "thesis-proposal"
 
     sweep_infos = [
-        SweepInfo(model_name="GCN", sweep_id="r4ised6c"),
-        SweepInfo(model_name="GCN-JK", sweep_id="ur539u0i"),
-        SweepInfo(model_name=NoEscape("Linear" + math("_{global}")), sweep_id="8u6z7iw0")
+        SweepInfo(model_name=NoEscape("Linear" + math("_{local}")), sweep_id="j1skq9oe"),
+        SweepInfo(model_name="GCN", sweep_id="ngnixgvn"),
+        SweepInfo(model_name="GCN-JK", sweep_id="0kcut7oo"),
+        SweepInfo(model_name=NoEscape("Linear" + math("_{global}")), sweep_id="vq6fbtl9")
     ]
 
-    metric_dir = "val/"
+    metric_dir = "eval/"
 
     num_decimals = 5
 
