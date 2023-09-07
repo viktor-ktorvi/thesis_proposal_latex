@@ -109,13 +109,13 @@ def get_contents(path: str,
 
     # mark the best value in each row
     for i in range(len(metrics)):
-        if (table_contents[i, :] == table_contents[i, 0]).all():  # if all columns are equal
-            continue
+        # if (table_contents[i, :] == table_contents[i, 0]).all():  # if all columns are equal
+        #     continue
 
         if metrics[i].compare_func == max:
-            column_idx = np.argmax(table_contents[i, :], axis=0)
+            column_idx = np.argwhere(table_contents[i, :] == np.amax(table_contents[i, :]))
         elif metrics[i].compare_func == min:
-            column_idx = np.argmin(table_contents[i, :], axis=0)
+            column_idx = np.argwhere(table_contents[i, :] == np.amin(table_contents[i, :]))
         else:
             raise ValueError(f"{metrics[i].compare_func} not supported. Expected [min, max]")
 
