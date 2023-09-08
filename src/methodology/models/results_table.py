@@ -31,6 +31,9 @@ def results_table(header: List[str],
         a, b = ret_string.split("e")
         # remove leading "+" and strip leading zeros
         b = int(b)
+        if b == 0:
+            return f"{a}"
+
         # return a + " * 10^" + str(b)
         return rf"{a} \cdot 10^{{{str(b)}}}"
 
@@ -118,8 +121,6 @@ def get_contents(path: str,
 
     # mark the best value in each row
     for i in range(len(metrics)):
-        # if (table_contents[i, :] == table_contents[i, 0]).all():  # if all columns are equal
-        #     continue
 
         if metrics[i].compare_func == max:
             column_idx = np.argwhere(table_contents[i, :] == np.amax(table_contents[i, :]))
@@ -176,10 +177,10 @@ def create_results_table() -> Table:
     path = "thesis-proposal"
 
     sweep_infos = [
-        SweepInfo(model_name=NoEscape("Linear" + math("_{local}")), sweep_id="j1skq9oe"),
+        SweepInfo(model_name=NoEscape("Linear" + math(r"_{\boldsymbol{local}}")), sweep_id="j1skq9oe"),
         SweepInfo(model_name="GCN", sweep_id="ngnixgvn"),
         SweepInfo(model_name="GCN-JK", sweep_id="0kcut7oo"),
-        SweepInfo(model_name=NoEscape("Linear" + math("_{global}")), sweep_id="vq6fbtl9")
+        SweepInfo(model_name=NoEscape("Linear" + math(r"_{\boldsymbol{global}}")), sweep_id="vq6fbtl9")
     ]
 
     metric_dir = "eval/"
@@ -212,11 +213,12 @@ def create_results_table() -> Table:
                                                        main_metric=main_metric,
                                                        metrics=metrics)
 
-    header = ["Metric"] + [sweep_info.model_name for sweep_info in sweep_infos]
-    metric_symbols = [metric.symbol for metric in metrics]
+    header = [sweep_info.model_name for sweep_info in sweep_infos]
+    header = [bold(h) for h in header]
+    metric_symbols = [bold("Metric")] + [NoEscape(metric.symbol) for metric in metrics]
 
     # TODO possibly transpose the table
-    table = results_table(header, metric_symbols, table_contents, table_contents_mask,
+    table = results_table(metric_symbols, header, table_contents.T, table_contents_mask.T,
                           num_decimals=num_decimals,
                           caption="This is a results table",
                           marker=Marker("results_table_ref", prefix="tab", del_invalid_char=True))
