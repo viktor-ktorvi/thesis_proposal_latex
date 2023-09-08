@@ -19,20 +19,20 @@
 
 
         \node (input) {};
-        \node[block, right of=input, align=center] (input_scaler) {Input \\ Standard \\ Scaler};
-        \node[prod] at ($(input_scaler)!0.5!(input)$) (input_product) {$\times$};
+        \node[block, right=6cm of input, align=center] (input_scaler) {Input \\ Standard \\ Scaler};
+        \node[prod] at ($(input)!0.3!(input_scaler)$) (input_product) {$\times$};
         \node[below of=input] (mask) {};
 
-        \node[block, right=1cm of input_scaler] (gnn) {GNN};
-        \node[block, right=1cm of gnn] (linear) {Linear};
-        \node[block, right=1cm of linear, align=center] (output_scaler) {Inverse \\ Output \\ Standard \\ Scaler};
+        \node[block, right=0.7cm of input_scaler] (gnn) {GNN};
+        \node[block, right=0.7cm of gnn] (linear) {Linear};
+        \node[block, right=0.7cm of linear, align=center] (output_scaler) {Inverse \\ Output \\ Standard \\ Scaler};
 
         \node[sum, right=4cm of output_scaler] (sum) {+};
         \node[prod] at ($(output_scaler)!0.3!(sum)$) (output_product) {$\times$};
 
         \node[right=1cm of sum] (approx) {};
 
-        \node[not port, below of=input_scaler, align=center](not_mask){};
+        \node[not port, below of=output_scaler, align=center](not_mask){};
 
 
         \draw[->] (input) -- node[above, pos=0] {$\pqva$} (input_product);
@@ -42,9 +42,9 @@
 
         \draw[->] (mask_split.center) -- (input_product);
 
-        \draw[->] (input_product) -- ++ (+0.6, 0) node(input_product_split){} --  (input_scaler);
+        \draw[->] (input_product) -- node[below]{$\pqva_{const}$} ++ ($(input_product)!0.25!(input_scaler)$, 0) node(input_product_split){} --  (input_scaler);
 
-        \draw [->] (input_product_split.center) -- ++ (0,+2) -| node[above, pos=0.25]{$\pqva_{const}$} (sum);
+        \draw [->] (input_product_split.center) -- ++ (0,+2) -| (sum);
 
         \draw[->] (input_scaler) -- (gnn);
         \draw[->] (gnn) -- (linear);
