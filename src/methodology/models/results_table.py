@@ -14,13 +14,11 @@ from pylatex.utils import bold
 from methodology.metrics.metrics import math
 
 
-def results_table(header: List[str],
-                  metric_symbols: List[str],
-                  table_contents: NDArray,
-                  table_contents_mask: NDArray,
-                  num_decimals: int,
-                  caption: str,
-                  marker: Marker) -> Table:
+def results_tabular(header: List[str],
+                    metric_symbols: List[str],
+                    table_contents: NDArray,
+                    table_contents_mask: NDArray,
+                    num_decimals: int) -> Tabular:
     tabular = Tabular("|" + "".join("c|" for _ in range(len(header))))
     tabular.add_hline()
     tabular.add_row(*header)
@@ -47,13 +45,20 @@ def results_table(header: List[str],
         tabular.add_row(NoEscape(metric_symbols[i]), *[NoEscape(math(content)) for content in contents])
         tabular.add_hline()
 
-    table = Table(position="H")
-    table.append(NoEscape(r'\centering'))
-    table.append(tabular)
-    table.add_caption(caption)
-    table.append(Label(marker))
+    # table = Table(position="H")
+    # # table.append(NoEscape(r'\centering'))
+    # table.append(NoEscape(r"\begin{center}"))
+    # table.append(NoEscape(rf"\scalebox{{{scale}}}{{"))
+    #
+    # table.append(tabular)
+    # table.append(NoEscape(r"}"))
+    #
+    # table.append(NoEscape(r"\end{center}"))
+    #
+    # table.add_caption(caption)
+    # table.append(Label(marker))
 
-    return table
+    return tabular
 
 
 @dataclass
@@ -81,6 +86,13 @@ class Metric:
             return True
 
         return False
+
+    def mean(self):
+        self.key = f"mean {self.key}"
+        self.symbol = self.symbol.replace("$", "")
+        self.symbol = math(rf"\overline{{{self.symbol}}}")
+
+        return self
 
 
 def wandb_path(path: str, id_: str) -> str:
@@ -171,62 +183,3 @@ def get_best_run(sweep, best_metric: Metric, metric_dir: str, metric_filter: Met
                 if best_metric.compare(current_run_metric):
                     best_metric.value = current_run_metric
                     best_metric.run_id = run.id
-
-
-def create_results_table() -> Table:
-    path = "thesis-proposal"
-
-    sweep_infos = [
-        SweepInfo(model_name=NoEscape("Linear" + math(r"_{\boldsymbol{local}}")), sweep_id="j1skq9oe"),
-        SweepInfo(model_name="GCN", sweep_id="ngnixgvn"),
-        SweepInfo(model_name="GCN-JK", sweep_id="0kcut7oo"),
-        SweepInfo(model_name=NoEscape("Linear" + math(r"_{\boldsymbol{global}}")), sweep_id="vq6fbtl9")
-    ]
-
-    metric_dir = "eval/"
-
-    num_decimals = 2
-
-    # TODO make a unique constant that ties the keys and symbols so that the chance of error is minimized
-    # which metrics to fetch
-    metrics = [
-        Metric(key="r2 score", symbol=math("R^2"), compare_func=max),
-        Metric(key="mean relative active power error [ratio]", symbol=math(r"\overline{\relativeabsoluteerror{P}}")),
-        Metric(key="mean relative reactive power error [ratio]", symbol=math(r"\overline{\relativeabsoluteerror{Q}}")),
-
-        Metric(key="mean upper active power error [p.u.]", symbol=math(r"\overline{\uppererror{P}}")),
-        Metric(key="mean lower active power error [p.u.]", symbol=math(r"\overline{\lowererror{P}}"), compare_func=max),
-        Metric(key="mean upper reactive power error [p.u.]", symbol=math(r"\overline{\uppererror{Q}}")),
-        Metric(key="mean lower reactive power error [p.u.]", symbol=math(r"\overline{\lowererror{Q}}"), compare_func=max),
-        Metric(key="mean upper voltage error [p.u.]", symbol=math(r"\overline{\uppererror{V}}")),
-        Metric(key="mean lower voltage error [p.u.]", symbol=math(r"\overline{\lowererror{V}}"), compare_func=max),
-
-        Metric(key="mean relative active power cost [ratio]", symbol=math(r"\overline{\relativecost}"))
-
-    ]
-
-    main_metric = Metric(key=metric_dir + "mean relative active power error [ratio]", symbol="symbol")
-
-    table_contents, table_contents_mask = get_contents(path=path,
-                                                       sweeps_infos=sweep_infos,
-                                                       metric_dir=metric_dir,
-                                                       main_metric=main_metric,
-                                                       metrics=metrics)
-
-    header = [sweep_info.model_name for sweep_info in sweep_infos]
-    header = [bold(h) for h in header]
-    metric_symbols = [bold("Metric")] + [NoEscape(metric.symbol) for metric in metrics]
-
-    # TODO possibly transpose the table
-    table = results_table(metric_symbols, header, table_contents.T, table_contents_mask.T,
-                          num_decimals=num_decimals,
-                          caption="This is a results table",
-                          marker=Marker("results_table_ref", prefix="tab", del_invalid_char=True))
-
-    # TODO possibly make two tables, one for mean one for max
-    # print(table.dumps())
-    return table
-
-
-if __name__ == "__main__":
-    create_results_table()
