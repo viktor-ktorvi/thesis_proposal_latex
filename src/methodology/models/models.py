@@ -9,11 +9,8 @@ def create_models():
     current_directory = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
     models = Subsection("Models", numbering=False)
-    models.append(create_results_table())
     models.append(Command("input", "methodology/models/current_results"))
-
-    models.append(NewLine())
-    models.append(NewLine())
+    models.append(create_results_table())
 
     models.append(Command("input", "methodology/models/models_todo"))
 

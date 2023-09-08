@@ -1,26 +1,29 @@
-To analyze the current state of applying graph neural networks to
-OPF, in table~\ref{tab:resultstableref} we provide the results of training three models on a single-topology dataset, each having access to
+\usepackage{lstmisc}To analyze the current state of applying graph neural networks to
+OPF, in Table~\ref{tab:resultstableref} we provide the results of training three models on a single-topology dataset, each having access to
 wider neighbourhood information.
-The details of how the models were selected and trained can be found in \textcolor{red}{APPENDIX}.
+The details of how the models were implemented, trained and selected can be found in the~\nameref{chap:appendix}.
 Intuitively, to solve the conservation of energy equations, one would need information on the
 state of all the nodes in the grid.
 Doing this for single-topology datasets is simple as we only need to concatenate the
-features of each node into a vector and fit, for instance, a linear model.
-And this does, as seen in table \textcolor{red}{REF},
+features of each node into a vector and fit, for instance, a linear model to the dataset.
+And this does, as seen in Table~\ref{tab:resultstableref},
 solve the problem with a satisfactory degree of accuracy.
 However, if we want to train models on a multi-topology dataset, which is a real world use case,
 this approach would not work as the classical machine learning algorithms cannot work with
-this data due to the varying number of features in the entire graph.
+this data due to the varying number of features in the graph.
 It is for this reason that we have to resort to graph learning approaches.
 In the same table, we see the effects of applying:
-a GCN which incorporates the local neighbourhood of each node; a GCN with jumping
-knowledge which enables the GCN to have a bit more depth and thus reach more nodes;
-and a linear model which has access to the features of every node.
-We can see that, as expected, incorporating more and more neighbourhood information leads to
+
+\begin{itemize}
+    \item Linear$_{local}$ - a linear model with no access to neighbourhood features.
+    \item GCN - a graph convolutional network~\cite{kipf2016semi} which incorporates the features of the
+    local neighbourhood of each node.
+    \item GCN-JK: a GCN with jumping knowledge~\cite{xu2018representation} which enables the GCN to have a bit
+    more depth and thus reach more nodes.
+    \item Linear$_{global}$ - a linear model which incorporates features of every node in the grid
+    by concatenating them.
+\end{itemize}
+
+\noindent We can see that, as expected, incorporating more and more neighbourhood information leads to
 smaller values of $\relativeabsoluteerror{P}$ and $\relativeabsoluteerror{Q}$.
 
-In this thesis, I propose to investigate the effectiveness of applying graph neural network
-architectures that can incorporate the wider neighbourhood information, for example,
-graph transformers and higher order GNNs.
-
-\textcolor{red}{Talk about the downsides of these approaches like the computational complexity of k-WL gnns}

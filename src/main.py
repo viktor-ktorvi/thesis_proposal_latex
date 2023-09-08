@@ -1,5 +1,6 @@
 from pylatex import Document, Command, NoEscape, Package, Subsection, Section, NewPage
 
+from appendix.appendix import create_appendix
 from introduction.introduction import create_introduction
 from methodology.methodology import create_methodology
 
@@ -10,6 +11,7 @@ def main():
     doc.preamble.append(Package("amsmath"))
     doc.preamble.append(Package("amssymb"))
     doc.preamble.append(Package("float"))
+    doc.preamble.append(Package("hyperref"))
     doc.preamble.append(Package("indentfirst"))
     doc.preamble.append(Package("makecell"))
     doc.preamble.append(NoEscape(r"\setcellgapes{5pt}"))
@@ -42,9 +44,10 @@ def main():
     doc.append(Command("bibliographystyle", "plain"))
 
     doc.append(NewPage())
+
+    create_appendix()
     doc.append(Command("appendix"))
-    doc.append(Section("Appendix A", numbering=False))
-    doc.append(Command("input", "appendix/model_diagram"))
+    doc.append(Command("input", "appendix/appendix"))
 
     with open("main.tex", "w") as f:
         f.write(doc.dumps())
