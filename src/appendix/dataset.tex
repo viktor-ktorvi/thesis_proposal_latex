@@ -1,0 +1,15 @@
+\subsection*{Dataset}
+
+The dataset used to obtain the results in
+Tables~\ref{tab:equalityconstraintsresults},~\ref{tab:inequalityconstraintsresults} and~\ref{tab:objectivefunctionresults}
+was not one of the datasets described in the Methodology because, at the time of writing this proposal, those datasets were not
+ready for publication.
+Instead, it is generated from a
+case30\footnote{\url{https://pandapower.readthedocs.io/en/v2.13.1/networks/power_system_test_cases.html\#case-30}}
+grid by augmenting its $\pqva$ randomly by multiplying each value by a number $u \sim \mathcal{U}(0.9, 1.1)$.
+Ironically, this is exactly what we were arguing against because of reproducibility issues, however the
+results still stand.
+Due to it being derived from a single grid, the dataset is a single-topology dataset.
+It consist of 3000 samples, a number found not to lead to overfitting, divided into a train and validation
+set in a 2:1 ratio.
+All the results are presented on the validation set.

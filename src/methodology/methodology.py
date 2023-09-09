@@ -16,7 +16,7 @@ def create_methodology():
     create_metrics()
     methodology.append(Command("input", "methodology/metrics/metrics"))
 
-    create_models()
+    # create_models()
     methodology.append(Command("input", "methodology/models/models"))
 
     with open(os.path.join(current_directory, "methodology.tex"), "w") as f:

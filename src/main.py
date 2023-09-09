@@ -24,6 +24,8 @@ def main():
 
     doc.append(NoEscape(r"\renewcommand\bibname{References}"))
 
+    doc.append(Command("input", "new_commands"))
+
     doc.preamble.append(Command("title", "Master thesis proposal"))
     doc.preamble.append(Command("author", "Viktor Todosijevic"))
     doc.preamble.append(Command("date", "August 2023"))
