@@ -1,13 +1,13 @@
 To analyze the current state of applying graph neural networks to
-OPF, in Table~\ref{tab:resultstableref} we provide the results of training three models on a single-topology dataset, each having access to
+OPF, in Tables~\ref{tab:equalityconstraintsresults},~\ref{tab:inequalityconstraintsresults} and~\ref{tab:objectivefunctionresults}
+we provide the results of training three models on a single-topology dataset, each having access to
 wider neighbourhood information.
 The details of how the models were implemented, trained and selected can be found in the~\nameref{chap:appendix}.
 Intuitively, to solve the conservation of energy equations, one would need information on the
 state of all the nodes in the grid.
 Doing this for single-topology datasets is simple as we only need to concatenate the
 features of each node into a vector and fit, for instance, a linear model to the dataset.
-And this does, as seen in Table~\ref{tab:equalityconstraintsresults},
-solve the problem with a satisfactory degree of accuracy.
+And this does, as seen in the provided tables, solve the problem with a satisfactory degree of accuracy.
 However, if we want to train models on a multi-topology dataset, which is a real world use case,
 this approach would not work as the classical machine learning algorithms cannot work with
 this data due to the varying number of features in the graph.
