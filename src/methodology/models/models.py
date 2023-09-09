@@ -27,33 +27,79 @@ def create_models():
 
     num_decimals = 2
 
-    # TODO make a unique constant that ties the keys and symbols so that the chance of error is minimized
-
     # which metrics to fetch
     equality_metrics = [
         Metric(key="relative active power error [ratio]", symbol=math(r"\relativeabsoluteerror{P}")),
+        Metric(key="active power error [p.u.]", symbol=math(r"\absoluteerror{P}")),
         Metric(key="relative reactive power error [ratio]", symbol=math(r"\relativeabsoluteerror{Q}")),
+        Metric(key="reactive power error [p.u.]", symbol=math(r"\absoluteerror{Q}")),
 
     ]
 
-    inequality_metrics = [
+    upper_inequality_metrics = [
         Metric(key="upper active power error [p.u.]", symbol=math(r"\uppererror{P}")),
-        Metric(key="lower active power error [p.u.]", symbol=math(r"\lowererror{P}"), compare_func=max),
         Metric(key="upper reactive power error [p.u.]", symbol=math(r"\uppererror{Q}")),
-        Metric(key="lower reactive power error [p.u.]", symbol=math(r"\lowererror{Q}"), compare_func=max),
         Metric(key="upper voltage error [p.u.]", symbol=math(r"\uppererror{V}")),
+    ]
+
+    lower_inequality_metrics = [
+        Metric(key="lower active power error [p.u.]", symbol=math(r"\lowererror{P}"), compare_func=max),
+        Metric(key="lower reactive power error [p.u.]", symbol=math(r"\lowererror{Q}"), compare_func=max),
         Metric(key="lower voltage error [p.u.]", symbol=math(r"\lowererror{V}"), compare_func=max),
     ]
 
-    cost_metrics = [
+    objective_function_metrics = [
+        Metric(key="active power cost [$ per h]", symbol=math(r"C")),
         Metric(key="relative active power cost [ratio]", symbol=math(r"\relativecost"))
     ]
 
-    mean_equality_metrics = [metric.mean() for metric in equality_metrics]
-
     main_metric = Metric(key=metric_dir + "mean relative active power error [ratio]", symbol="symbol")
 
-    models.append(create_results_table(path, sweep_infos, metric_dir, main_metric, equality_metrics, num_decimals))
+    models.append(create_results_table(
+        path,
+        sweep_infos,
+        metric_dir,
+        main_metric,
+        [[metric.mean() for metric in equality_metrics],
+         [metric.worst_case() for metric in equality_metrics]],
+        num_decimals,
+        "Equality constraint metrics.",
+        Marker("equalityconstraintsresults", prefix="tab", del_invalid_char=True),
+        subcaptions=["Mean errors", "Worst case errors"]
+    ))
+
+    models.append(create_results_table(
+        path,
+        sweep_infos,
+        metric_dir,
+        main_metric,
+        [[metric.mean() for metric in upper_inequality_metrics],
+         [metric.worst_case() for metric in upper_inequality_metrics],
+         [metric.mean() for metric in lower_inequality_metrics],
+         [metric.worst_case() for metric in lower_inequality_metrics]
+         ],
+        num_decimals,
+        "Inequality constraint metrics.",
+        Marker("inequalityconstraintsresults", prefix="tab", del_invalid_char=True),
+        subcaptions=["Mean upper bound errors",
+                     "Worst case upper bound errors",
+                     "Mean lower bound errors",
+                     "Worst case lower bound errors",
+                     ]
+    ))
+
+    models.append(create_results_table(
+        path,
+        sweep_infos,
+        metric_dir,
+        main_metric,
+        [[metric.mean() for metric in objective_function_metrics],
+         [metric.worst_case() for metric in objective_function_metrics]],
+        num_decimals,
+        "Objective function metrics.",
+        Marker("objectivefunctionresults", prefix="tab", del_invalid_char=True),
+        subcaptions=["Mean value", "Worst case value"]
+    ))
 
     models.append(Command("input", "methodology/models/models_todo"))
 
@@ -61,31 +107,43 @@ def create_models():
         f.write(models.dumps())
 
 
-def create_results_table(path: str, sweep_infos: List[SweepInfo], metric_dir: str, main_metric: Metric, metrics: List[Metric], num_decimals: int):
+def create_results_subtable(header: List[str], path: str, sweep_infos: List[SweepInfo], metric_dir: str, main_metric: Metric, metrics: List[Metric], num_decimals: int):
     table_contents, table_contents_mask = get_contents(path=path,
                                                        sweeps_infos=sweep_infos,
                                                        metric_dir=metric_dir,
                                                        main_metric=main_metric,
                                                        metrics=metrics)
 
-    header = [sweep_info.model_name for sweep_info in sweep_infos]
-    header = [bold(h) for h in header]
     metric_symbols = [bold("Metric")] + [NoEscape(metric.symbol) for metric in metrics]
 
     tabular1 = results_tabular(metric_symbols, header, table_contents.T, table_contents_mask.T,
                                num_decimals=num_decimals)
 
-    tabular2 = results_tabular(metric_symbols, header, table_contents.T, table_contents_mask.T,
-                               num_decimals=num_decimals)
+    return tabular1
+
+
+def create_results_table(path: str,
+                         sweep_infos: List[SweepInfo],
+                         metric_dir: str,
+                         main_metric: Metric,
+                         metrics: List[List[Metric]],
+                         num_decimals: int,
+                         caption: str,
+                         marker: Marker,
+                         subcaptions: List[str]):
+    header = [sweep_info.model_name for sweep_info in sweep_infos]
+    header = [bold(h) for h in header]
+
+    tabulars = [create_results_subtable(header, path, sweep_infos, metric_dir, main_metric, metrics[i], num_decimals) for i in range(len(metrics))]
 
     table = Table(position="H")
     table.append(NoEscape(r'\centering'))
 
-    table.append(NoEscape(rf"\subfloat[Tabular 1]{{{tabular1.dumps()}}}"))
-    table.append(Command("quad"))
-    table.append(NoEscape(rf"\subfloat[Tabular 2]{{{tabular2.dumps()}}}"))
+    for i in range(len(tabulars)):
+        table.append(NoEscape(rf"\subfloat[{subcaptions[i]}]{{{tabulars[i].dumps()}}}"))
+        table.append(Command("quad"))
 
-    table.add_caption("This is a results table")
-    table.append(Label(Marker("results_table_ref", prefix="tab", del_invalid_char=True)))
+    table.add_caption(caption)
+    table.append(Label(marker))
 
     return table

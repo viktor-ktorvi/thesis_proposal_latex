@@ -88,11 +88,28 @@ class Metric:
         return False
 
     def mean(self):
-        self.key = f"mean {self.key}"
-        self.symbol = self.symbol.replace("$", "")
-        self.symbol = math(rf"\overline{{{self.symbol}}}")
+        new_metric = copy.deepcopy(self)
 
-        return self
+        new_metric.key = f"mean {new_metric.key}"
+        new_metric.symbol = new_metric.symbol.replace("$", "")
+        new_metric.symbol = math(rf"\overline{{{new_metric.symbol}}}")
+
+        return new_metric
+
+    def worst_case(self):
+        new_metric = copy.deepcopy(self)
+        if new_metric.compare_func == min:
+            key_prefix = "max"
+        elif new_metric.compare_func == max:
+            key_prefix = "min"
+        else:
+            raise ValueError(f"Compare function '{new_metric.compare_func}' not supported.")
+
+        new_metric.key = f"{key_prefix} {new_metric.key}"
+        new_metric.symbol = new_metric.symbol.replace("$", "")
+        new_metric.symbol = math(rf"\{key_prefix}{{{new_metric.symbol}}}")
+
+        return new_metric
 
 
 def wandb_path(path: str, id_: str) -> str:
@@ -105,9 +122,6 @@ def get_contents(path: str,
                  main_metric: Metric,
                  metrics: List[Metric]) -> Tuple[NDArray, ...]:
     api = wandb.Api()
-
-    for metric in metrics:
-        metric.key = metric_dir + metric.key
 
     for sweep_info in sweeps_infos:
         sweep = api.sweep(wandb_path(path, sweep_info.sweep_id))
@@ -127,7 +141,7 @@ def get_contents(path: str,
     for j in range(len(sweeps_infos)):
         run = api.run(wandb_path(path, sweeps_infos[j].best_run_id))
         for i in range(len(metrics)):
-            table_contents[i, j] = run.summary[metrics[i].key]
+            table_contents[i, j] = run.summary[metric_dir + metrics[i].key]
 
     table_contents_mask = np.zeros_like(table_contents, dtype=bool)
 
