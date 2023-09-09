@@ -9,6 +9,7 @@ def create_appendix():
 
     appendix = Chapter("Appendix", numbering=False, label="appendix")
     appendix.append(Command("input", "appendix/model_diagram"))
+    appendix.append("TODO what dataset, how much, how many epochs, what jk, what grid search etc.")
 
     with open(os.path.join(current_directory, "appendix.tex"), "w") as f:
         f.write(appendix.dumps())
