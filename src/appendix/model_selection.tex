@@ -1,0 +1,15 @@
+\subsection*{Model selection}
+
+The models were selected using a hyperparameter grid search in the following way, depending on the model type:
+\begin{itemize}
+    \item Linear$_{local}$ - using ridge regression with the weight decay parameter
+    $\lambda \in \{3 \cdot 10^{-5}, \ 3 \cdot 10^{-4}, \ 3 \cdot 10^{-3}, \ 3 \cdot 10^{-2}, \ 3 \cdot 10^{-1}\}$.
+    The standardization was done locally.
+    The model consumed the features of the nodes individually.
+    \item Linear$_{global}$ - in the same way as Linear$_{local}$ but the normalization was done globally and
+    the features of all the nodes were concatenated to create a single feature vector per graph.
+    \item GCN - using the Adam optimizer with the learning rate $\alpha \in \{10^{-4}, \ 10^{-3}, \ 10^{-2}\}$,
+    hidden layer size $h \in \{100, \ 200\}$ and number of layers $n_{layer} \in \{2, \ 5, \ 10, \ 15, \ 20, \ 30\}$.
+    The normalization was done globally.
+    \item GCN-JK - in the same way as GCN but with jumping knowledge aggregated with the $\max$ operator.
+\end{itemize}
