@@ -10,11 +10,6 @@ def create_introduction():
 
     introduction = Subsection("Introduction", numbering=False)
 
-    introduction.append(NoEscape(r"This is a reference to Table~\ref{tab:nodemasks}"))
-
-    introduction.append(NewLine())
-    introduction.append(NewLine())
-
     introduction.append(Command("input", "introduction/basic_problem_statement"))
     introduction.append(Command("input", "introduction/motivation"))
 

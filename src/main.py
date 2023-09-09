@@ -31,9 +31,6 @@ def main():
     doc.preamble.append(Command("date", "August 2023"))
     doc.append(NoEscape(r"\maketitle"))
 
-    doc.append(NoEscape(r"This is a reference to an equation~\ref{eq:four}"))
-    doc.append(Command("input", "equation/equation"))
-
     create_introduction()
     doc.append(Command("input", "introduction/introduction"))
 
