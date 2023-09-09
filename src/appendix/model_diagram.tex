@@ -1,7 +1,6 @@
 \usetikzlibrary{arrows,positioning,shapes.geometric, calc}
-
 \begin{figure}[H]
-    \centering
+    \makebox[\textwidth][c]{
     \begin{tikzpicture}[
         >=stealth,
         node distance=4cm,
@@ -51,6 +50,7 @@
         \draw[->] (sum) -- node[above, pos=1] {$\approxpqva$} (approx);
 
     \end{tikzpicture}
+    }
     \caption{GNN model block diagram.}%
     \label{fig:gnn_model_block_diagram}%
 \end{figure}
