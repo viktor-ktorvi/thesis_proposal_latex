@@ -1,7 +1,7 @@
 import os
 from typing import List
 
-from pylatex import Subsection, Subsubsection, Command, NoEscape, Marker, NewLine, Table, Label
+from pylatex import Subsection, Command, NoEscape, Marker, Table, Label
 from pylatex.utils import bold
 
 from methodology.metrics.metrics import math
@@ -11,7 +11,7 @@ from methodology.models.results_table import SweepInfo, Metric, get_contents, re
 def create_models():
     current_directory = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
-    models = Subsection("Models", numbering=False)
+    models = Subsection("Current model results", numbering=False)
     models.append(Command("input", "methodology/models/current_results"))
 
     path = "thesis-proposal"

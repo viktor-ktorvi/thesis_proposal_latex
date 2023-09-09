@@ -2,9 +2,6 @@
 
 
 \begin{itemize}
-    \item Let's have a table comparing single-/multi-topology and like linear regression vs GCN
-    \item It'd be good to have an appendix where the model is drawn with all the masks and scalers,
-    as well as how the hyperparameter search was performed.
     \item Let's talk about how having the global information is needed for the conservation of energy
     part, but we also need gnns to handle multiple topologies
     \item Then we introduce the possible architectures to try
@@ -14,4 +11,35 @@
     \item I can take a look at that expressivity tutorial and at the end they have tips for what to use and when.
     I can list all approach categories and say which ones fit my use case and which ones don't.
     \item Could also look at what's doing well one the LRGB dataset and argue that my graphs are similar.
+\end{itemize}
+
+\subsubsection*{Proposed models}
+In the following section we will attempt to deduce which (more expressive) approaches and architectures
+make sense to be applied power grid datasets.
+For this we will use the analysis presented in~\cite{expresive2022tutorial}.
+The analysis presents four approaches to more expressive graph neural networks:
+\begin{itemize}
+    \item higher order
+    \item feature augmentations
+    \item substructure awareness
+    \item subgraphs
+\end{itemize}
+
+The analysis suggests that higher order methods work best for smaller graphs due to their high computational complexity.
+Seeing as though these methods are usually applied to molecular datasets and that the sizes of those graphs are in
+the low tens~\ref{morris2020tudataset}, while power grids do come in that size, they also often come in the hundreds.
+For that reasons we deem these methods unfeasible for achieving speedups in solving the OPF problem.
+For the same reason of computational complexity we disregard networks that divide the graph into a bag of subgraphs and work from there.
+Additionally, since most power grids are trees and paths and their subgraphs are also trees and paths.
+The same reasoning applies to using substructure awareness.
+Finally, all that's left is feature augmentation.
+
+
+TODO
+
+\begin{itemize}
+    \item larger training sets aren't a problem; we just generate them
+    \item no need for invariance; all we need is equivariance
+    \item preprocessing is okay as long as it's fast; even if it isn't, the multi-topology datasets
+    will consist of many grids with the same topology so preprocessing could be done once and then reused
 \end{itemize}
