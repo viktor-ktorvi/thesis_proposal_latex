@@ -16,7 +16,7 @@ def create_methodology():
     create_metrics()
     methodology.append(Command("input", "methodology/metrics/metrics"))
 
-    create_models()
+    # create_models()
     methodology.append(Command("input", "methodology/models/models"))
 
     methodology.append(Command("input", "methodology/models/models_todo"))

@@ -27,20 +27,27 @@ def main():
 
     doc.append(Command("input", "new_commands"))
 
-    doc.preamble.append(Command("title", "Master thesis proposal"))
+    doc.preamble.append(Command("title", "Expressive graph neural networks for optimal power flow: a master thesis proposal"))
     doc.preamble.append(Command("author", "Viktor Todosijevic"))
-    doc.preamble.append(Command("date", "August 2023"))
+    doc.preamble.append(Command("date", "September 2023"))
     doc.append(NoEscape(r"\maketitle"))
 
     create_introduction()
     doc.append(Command("input", "introduction/introduction"))
+    doc.append(NewPage())
 
     literature_overview = Section("Overview of the literature", numbering=False)
     literature_overview.append(Command("input", "literature_overview/literature_overview"))
     doc.append(literature_overview)
 
+    doc.append(NewPage())
+
     create_methodology()
     doc.append(Command("input", "methodology/methodology"))
+
+    doc.append(NewPage())
+
+    doc.append(Command("input", "conclusion"))
 
     doc.append(Command("bibliography", "main"))
     doc.append(Command("bibliographystyle", "unsrt"))

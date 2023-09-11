@@ -1,0 +1,26 @@
+\section*{Conclusion}
+
+The OPF problem is a nonlinear, non-convex optimization problem whose mathematical
+formulation lives on a graph.
+There is a real need to run this optimization problem a large number of times which is,
+using conventional solvers, very computationally expensive.
+Machine learning methods provide a way to learn a heuristic that approximates the solution,
+while being orders of magnitude faster than conventional solvers.
+Classical methods as simple as linear regression learn the solution to the problem
+with a high degree of precision on single topology datasets by concatenating all the
+node features into a single feature vector but can't work on multi-topology sets.
+Graph neural networks lend themselves nicely to fill the gap and extend to the
+multi-topology case, however, the common 1-WL bound GNNs currently don't solve
+the problem with a statisfactory degree of precision, likely because of not having
+access to the global node information.
+In this thesis proposal, we propose to explore the use of more expressive GNNs
+like graph transformers, to provide global information to the networks in order
+to get a better approximation of the OPF solution, all while being able to work
+with datasets with multiple topologies.
+We propose to start from the supervised case, where the solution of the conventional
+solver is learned, and, if successful, move on to the unsupervised case, where there is
+no need to use conventional solvers eliminating their upfront computational cost.
+Additionally to exploring these new model architectures, we propose to apply them
+on new benchmark datasets with a fixed train, validation and test split and with
+more interpretable metrics that we've introduced in order to improve reproducibility
+and solution quality assessment in relation to previous works.
