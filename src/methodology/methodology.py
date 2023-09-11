@@ -18,9 +18,8 @@ def create_methodology():
 
     create_models()
     methodology.append(Command("input", "methodology/models/models"))
-    
-    methodology.append(Command("input", "methodology/models/models_todo"))
 
+    methodology.append(Command("input", "methodology/models/models_todo"))
 
     with open(os.path.join(current_directory, "methodology.tex"), "w") as f:
         f.write(methodology.dumps())

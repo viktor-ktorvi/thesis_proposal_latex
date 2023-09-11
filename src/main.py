@@ -11,6 +11,7 @@ def main():
     doc.preamble.append(Package("amsmath"))
     doc.preamble.append(Package("amssymb"))
     doc.preamble.append(Package("float"))
+    doc.preamble.append(Package("footmisc", options="perpage"))
     doc.preamble.append(Package("graphicx"))
     doc.preamble.append(Package("hyperref"))
     doc.preamble.append(Package("indentfirst"))
@@ -42,7 +43,7 @@ def main():
     doc.append(Command("input", "methodology/methodology"))
 
     doc.append(Command("bibliography", "main"))
-    doc.append(Command("bibliographystyle", "plain"))
+    doc.append(Command("bibliographystyle", "unsrt"))
 
     doc.append(NewPage())
 
