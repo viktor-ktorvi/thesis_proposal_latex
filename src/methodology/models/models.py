@@ -101,8 +101,6 @@ def create_models():
         subcaptions=["Mean value", "Worst case value"]
     ))
 
-    models.append(Command("input", "methodology/models/models_todo"))
-
     with open(os.path.join(current_directory, "models.tex"), "w") as f:
         f.write(models.dumps())
 

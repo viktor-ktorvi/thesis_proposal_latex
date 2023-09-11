@@ -22,24 +22,36 @@ The analysis presents four approaches to more expressive graph neural networks:
     \item higher order
     \item feature augmentations
     \item substructure awareness
-    \item subgraphs
+    \item bag of subgraphs
 \end{itemize}
 
-The analysis suggests that higher order methods work best for smaller graphs due to their high computational complexity.
-Seeing as though these methods are usually applied to molecular datasets and that the sizes of those graphs are in
-the low tens~\ref{morris2020tudataset}, while power grids do come in that size, they also often come in the hundreds.
+The analysis suggests that higher order methods work best for smaller graphs due to their
+high computational complexity.
+Seeing as though these methods are usually applied to molecular datasets and that the
+sizes of those graphs are in the low tens of nodes~\cite{morris2020tudataset},
+while power grids do come in that size, they also often come in the hundreds of nodes.
 For that reasons we deem these methods unfeasible for achieving speedups in solving the OPF problem.
-For the same reason of computational complexity we disregard networks that divide the graph into a bag of subgraphs and work from there.
-Additionally, since most power grids are trees and paths and their subgraphs are also trees and paths.
-The same reasoning applies to using substructure awareness.
-Finally, all that's left is feature augmentation.
+For the same reason we disregard the bag of subgraphs approach.
+Additionally, since most power grids are trees and paths and their subgraphs are also trees and paths
+it doesn't seem likely that keeping track of these sub-parts will lead to much benefit, so this
+rules out substructure awareness as well.
+What is most likely is that this task needs methods that have access to all the node features in the
+grid so that a proper conservation of energy solution can be calculated.
+All that's left is feature augmentation paired, likely, with graph transformers.
+According to the analysis, these methods are applicable when large datasets are available,
+which is the case since we can always generate more; when permutation invariance can be loosened,
+which isn't a problem because we only need equivariance since we're doing a node level task; and
+preprocessing is okay.
 
-
-TODO
-
-\begin{itemize}
-    \item larger training sets aren't a problem; we just generate them
-    \item no need for invariance; all we need is equivariance
-    \item preprocessing is okay as long as it's fast; even if it isn't, the multi-topology datasets
-    will consist of many grids with the same topology so preprocessing could be done once and then reused
-\end{itemize}
+Specifically, for our case, preprocessing is okay as long as it's fast and as long as the
+entire inference brings a large enough speedup over conventional solvers.
+Even if the preprocessing of a single sample isn't very fast, there might be workarounds.
+Since the grid operator needs to evaluate many hundreds or thousands of grids at once, the
+evaluation could be done in parallel, and if the preprocessing could be shared over many
+samples then the computational cost can be split evenly, making it negligible for a large
+enough amount of samples.
+For example, the evaluation dataset would consist of graphs with many topologies, but each
+of those topologies would be represented by many samples.
+If we were to have to calculate the laplacian eigenvectors or random walk encodings as part
+of the preprocessing step, then that could be done for each topology once and then reused
+for all the other samples.
