@@ -34,7 +34,7 @@ def main():
     create_introduction()
     doc.append(Command("input", "introduction/introduction"))
 
-    literature_overview = Subsection("Overview of the literature", numbering=False)
+    literature_overview = Section("Overview of the literature", numbering=False)
     literature_overview.append(Command("input", "literature_overview/literature_overview"))
     doc.append(literature_overview)
 

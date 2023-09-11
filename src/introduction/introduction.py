@@ -1,6 +1,6 @@
 import os
 
-from pylatex import Subsection, Marker, NoEscape, Command, NewLine
+from pylatex import Subsection, Marker, NoEscape, Command, NewLine, Section
 
 from introduction.node_type_masks_table import node_type_mask_table
 
@@ -8,7 +8,7 @@ from introduction.node_type_masks_table import node_type_mask_table
 def create_introduction():
     current_directory = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
-    introduction = Subsection("Introduction", numbering=False)
+    introduction = Section("Introduction", numbering=False)
 
     introduction.append(Command("input", "introduction/basic_problem_statement"))
     introduction.append(Command("input", "introduction/motivation"))
