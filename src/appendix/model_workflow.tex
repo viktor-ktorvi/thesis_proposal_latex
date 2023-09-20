@@ -1,25 +1,15 @@
-\subsection*{Model workflow}
-
-The models consist of a standard regression pipeline (with problem specific modifications) depicted in
-Figure~\ref{fig:gnn_model_block_diagram}, where the input of the model, in this case the constants in the OPF problem,
-are fed into a standard scaler \[z_{in} = \displaystyle\frac{x_{in} - \mu_{in}}{\sigma_{in}}\] then (optionally) through a GNN
-feature extractor and then through a linear layer.
-The outputs of the linear layer are then fed through and inverse standard scaler \[x_{out} = z_{out}\sigma_{out} + \mu_{out}\]
-after which a binary mask is applied to leave only the variables of the OPF problem.
-Those are, finally, combined with the constants to create an approximation of the optimal grid state $\approxpqva$.
-All statistics are calculated strictly on the train set.
-
-\mbox{}\\
-
-
-One important trick that leads to better performance and that can only be applied to single-topology datasets is computing the statistics
-$\mu_{in}, \sigma_{in}, \mu_{out}, \sigma_{out} \in \mathbb{R}^{d_{var}}$, where $d_{var}$ is the number of variables, for each variable
-independently.
-This is contrary to the more general case applicable to multi-topology datasets where we compute
-$\mu_{in}, \sigma_{in}, \mu_{out}, \sigma_{out} \in \mathbb{R}^4$ only over the physical values themselves.
-Additionally, in this case we calculate the input statistics after applying the node mask to the $\pqva$ matrix
-(essentially deleting the target info) because that is what the input layer of the network will be receiving, but
-use the untouched $\pqva$ matrix for calculating the output statistics because there is no reason for the zeros
-to skew the statistics.
+The supervised models consist of a standard regression pipeline (with problem specific modifications) depicted in
+Figure~\ref{fig:model_pipeline}.
+The input to the pipeline is the solved grid state matrix $\pqva \inrnxfour$ ($N$ denotes the number of nodes in a graph) which
+is first multiplied by the binary $\maskconstvar \in \{0, 1\}^{N \times 4}$ to delete the target information.
+This produces the matrix $\pqva_{const} \inrnxfour$ which is fed into a standard scaler to standardize the features.
+The standardized feature matrix $Z_{in}$ goes into one of the models whose output is $Z_{out}$.
+The dimensions of $Z_{in}$ and $Z_{out}$ are model specific.
+$Z_{out}$ is fed through an inverse
+standard scaler to produce $X_{out} \inrnxfour$ after which $\notmaskconstvar$ is applied to leave only the
+approximation of the variables of the OPF problem $\approxpqva_{var} \inrnxfour$.
+Those are, finally, combined with the constants to create a full approximation of the optimal grid state $\approxpqva \inrnxfour$.
+The different model types are shown in Figures~\ref{fig:linear_local},~\ref{fig:gnn_model} and~\ref{fig:linear_global}.
 
 \mbox{}\\
+

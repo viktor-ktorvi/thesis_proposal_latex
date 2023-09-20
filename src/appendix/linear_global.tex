@@ -1,0 +1,33 @@
+\usetikzlibrary{arrows,positioning,shapes.geometric, calc}
+\begin{figure}[H]
+    \makebox[\textwidth][c]{
+        \begin{tikzpicture}[
+            >=stealth,
+            node distance=4cm,
+            block/.style={draw, fill=white, rectangle,
+            minimum height=4em},
+            sum/.style={draw, fill=white, circle},
+            prod/.style={draw, fill=white, circle},
+            scale=0.75,
+            transform shape
+        ]
+
+            \node (input) {};
+            \node[block, right=2cm of input, align=center] (linear) {Linear};
+            \node[right=2cm of linear] (output) {};
+
+            \draw[->] (input) -- node[above, pos=0] {$Z_{in} \in \mathbb{R}^{N_{const}}$} (linear);
+            \draw[->] (linear) -- node[above, pos=1] {$Z_{out} \in \mathbb{R}^{N_{var}}$} (output);
+
+
+        \end{tikzpicture}
+    }
+    \caption{Linear$_{global}$ - a linear regression in which the constans in each grid are concatenated into a single sample
+        $Z_{in} \in \mathbb{R}^{N_{const}}$ where $N_{const}$ is the number of constants in the grid (of equivalently the number
+        of ones in $\maskconstvar$).
+        From this, the vector of variables $Z_{out} \in \mathbb{R}^{N_{var}}$ where $N_{var}$ is the number of variables in the grid
+        (or equivalently the number of zeros in $\maskconstvar$).
+        These vectors are later reshaped(and zero padded) into a matrix of shape $N \times 4$
+        to conform with the rest of the pipeline.}%
+    \label{fig:linear_global}%
+\end{figure}

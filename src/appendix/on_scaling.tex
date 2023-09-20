@@ -1,0 +1,10 @@
+One minor trick that leads to better performance and that can only be applied to single-topology datasets is computing the statistics
+$\mu_{in}, \sigma_{in} \in \mathbb{R}^{N_{const}}$ and $\mu_{out}, \sigma_{out} \in \mathbb{R}^{N_{var}}$.
+This is contrary to the more general case applicable to multi-topology datasets where we compute
+$\mu_{in}, \sigma_{in}, \mu_{out}, \sigma_{out} \in \mathbb{R}^4$ only over the physical values themselves.
+Additionally, in this case we calculate the input statistics after applying the node mask to the $\pqva$ matrix
+(essentially deleting the target info) because that is what the input layer of the network will be receiving, but
+use the untouched $\pqva$ matrix for calculating the output statistics because there is no reason for the zeros
+to skew the statistics.
+
+\mbox{}\\

@@ -1,56 +1,54 @@
 \usetikzlibrary{arrows,positioning,shapes.geometric, calc}
 \begin{figure}[H]
     \makebox[\textwidth][c]{
-    \begin{tikzpicture}[
-        >=stealth,
-        node distance=4cm,
-        block/.style={draw, fill=white, rectangle,
-        minimum height=4em},
-        sum/.style={draw, fill=white, circle},
-        prod/.style={draw, fill=white, circle},
-        scale=0.75,
-        transform shape
-    ]
+        \begin{tikzpicture}[
+            >=stealth,
+            node distance=4cm,
+            block/.style={draw, fill=white, rectangle,
+            minimum height=4em},
+            sum/.style={draw, fill=white, circle},
+            prod/.style={draw, fill=white, circle},
+            scale=0.75,
+            transform shape
+        ]
 
 
-        \node (input) {};
-        \node[block, right=6cm of input, align=center] (input_scaler) {Input \\ Standard \\ Scaler};
-        \node[prod] at ($(input)!0.3!(input_scaler)$) (input_product) {$\times$};
-        \node[below of=input] (mask) {};
+            \node (input) {};
+            \node[block, right=5cm of input, align=center] (input_scaler) {Input \\ Standard \\ Scaler};
+            \node[prod] at ($(input)!0.3!(input_scaler)$) (input_product) {$\times$};
+            \node[below of=input] (mask) {};
 
-        \node[block, right=0.7cm of input_scaler] (gnn) {GNN};
-        \node[block, right=0.7cm of gnn] (linear) {Linear};
-        \node[block, right=0.7cm of linear, align=center] (output_scaler) {Inverse \\ Output \\ Standard \\ Scaler};
+            \node[block, right=1cm of input_scaler] (model) {Model};
+            \node[block, right=1cm of model, align=center] (output_scaler) {Inverse \\ Output \\ Standard \\ Scaler};
 
-        \node[sum, right=4cm of output_scaler] (sum) {+};
-        \node[prod] at ($(output_scaler)!0.3!(sum)$) (output_product) {$\times$};
+            \node[sum, right=5cm of output_scaler] (sum) {+};
+            \node[prod] at ($(output_scaler)!0.5!(sum)$) (output_product) {$\times$};
 
-        \node[right=1cm of sum] (approx) {};
+            \node[right=1cm of sum] (approx) {};
 
-        \node[not port, below of=output_scaler, align=center](not_mask){};
-
-
-        \draw[->] (input) -- node[above, pos=0] {$\pqva$} (input_product);
-
-        \draw[->] (mask) -- node[above, pos=0] {$mask_{const/var}$} ++ ($(input_product)$) node(mask_split){} -- (not_mask) -| (output_product);
+            \node[not port, below of=output_scaler, align=center](not_mask){};
 
 
-        \draw[->] (mask_split.center) -- (input_product);
+            \draw[->] (input) -- node[above, pos=0] {$\pqva$} (input_product);
 
-        \draw[->] (input_product) -- node[below]{$\pqva_{const}$} ++ ($(input_product)!0.25!(input_scaler)$, 0) node(input_product_split){} --  (input_scaler);
+            \draw[->] (mask) -- node[above, pos=0] {$\maskconstvar$} ++ ($(input_product)$) node(mask_split){} -- (not_mask) -| (output_product);
 
-        \draw [->] (input_product_split.center) -- ++ (0,+2) -| (sum);
 
-        \draw[->] (input_scaler) -- (gnn);
-        \draw[->] (gnn) -- (linear);
-        \draw[->] (linear) -- (output_scaler);
+            \draw[->] (mask_split.center) -- (input_product);
 
-        \draw[->] (output_scaler) -- (output_product);
-        \draw[->] (output_product) -- node[below, pos=0.5] {$\approxpqva_{var}$} (sum);
-        \draw[->] (sum) -- node[above, pos=1] {$\approxpqva$} (approx);
+            \draw[->] (input_product) -- ++ ($(input_product)!0.0!(input_scaler)$, 0) node[](input_product_split){} -- node[below, pos=0]{$\pqva_{const}$}  (input_scaler);
 
-    \end{tikzpicture}
+            \draw [->] (input_product_split.center) -- ++ (0,+2) -| (sum);
+
+            \draw[->] (input_scaler) -- node[above, pos=0.5] {$Z_{in}$} (model);
+            \draw[->] (model) -- node[above, pos=0.5] {$Z_{out}$} (output_scaler);
+
+            \draw[->] (output_scaler) -- node[above, pos=0.5] {$X_{out}$} (output_product);
+            \draw[->] (output_product) -- node[below, pos=0.5] {$\approxpqva_{var}$} (sum);
+            \draw[->] (sum) -- node[above, pos=1] {$\approxpqva$} (approx);
+
+        \end{tikzpicture}
     }
-    \caption{GNN model block diagram.}%
-    \label{fig:gnn_model_block_diagram}%
+    \caption{Model pipeline.}
+    \label{fig:model_pipeline}\label{fig:figure}%
 \end{figure}
