@@ -22,6 +22,8 @@ def main():
     doc.preamble.append(Package("xcolor"))
     doc.preamble.append(Package("circuitikz"))
     doc.preamble.append(Package("yhmath"))
+    doc.preamble.append(Package("tabularx"))
+    doc.preamble.append(Package("colortbl"))
 
     doc.append(NoEscape(r"\renewcommand\bibname{References}"))
 

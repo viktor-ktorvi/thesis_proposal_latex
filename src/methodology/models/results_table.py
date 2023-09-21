@@ -14,6 +14,18 @@ from pylatex.utils import bold
 from methodology.metrics.metrics import math
 
 
+def sci_notation(number, sig_fig=2):
+    ret_string = "{0:.{1:d}e}".format(number, sig_fig)
+    a, b = ret_string.split("e")
+    # remove leading "+" and strip leading zeros
+    b = int(b)
+    if b == 0:
+        return f"{a}"
+
+    # return a + " * 10^" + str(b)
+    return rf"{a} \cdot 10^{{{str(b)}}}"
+
+
 def results_tabular(header: List[str],
                     metric_symbols: List[str],
                     table_contents: NDArray,
@@ -23,17 +35,6 @@ def results_tabular(header: List[str],
     tabular.add_hline()
     tabular.add_row(*header)
     tabular.add_hline()
-
-    def sci_notation(number, sig_fig=2):
-        ret_string = "{0:.{1:d}e}".format(number, sig_fig)
-        a, b = ret_string.split("e")
-        # remove leading "+" and strip leading zeros
-        b = int(b)
-        if b == 0:
-            return f"{a}"
-
-        # return a + " * 10^" + str(b)
-        return rf"{a} \cdot 10^{{{str(b)}}}"
 
     for i in range(len(metric_symbols)):
         contents = [sci_notation(table_contents[i, j], sig_fig=num_decimals) for j in range(table_contents.shape[1])]
