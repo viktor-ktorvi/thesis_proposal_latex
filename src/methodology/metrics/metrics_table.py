@@ -26,7 +26,9 @@ def create_metrics_table(header: List[str], entries: List[TableEntry], caption: 
 
     table = Table(position="H")
     table.append(NoEscape(r'\centering'))
+    table.append(NoEscape(r"{\makegapedcells"))
     table.append(metric_tabular)
+    table.append(NoEscape(r"}"))
     table.add_caption(caption)
     table.append(Label(marker))
     return table

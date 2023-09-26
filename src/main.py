@@ -44,7 +44,7 @@ def main():
 
     doc.append(NewPage())
 
-    # create_methodology()
+    create_methodology()
     doc.append(Command("input", "methodology/methodology"))
 
     doc.append(NewPage())

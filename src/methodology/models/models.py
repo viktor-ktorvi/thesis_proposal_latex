@@ -138,7 +138,9 @@ def create_results_table(path: str,
     table.append(NoEscape(r'\centering'))
 
     for i in range(len(tabulars)):
+        table.append(NoEscape(r"{\makegapedcells"))
         table.append(NoEscape(rf"\subfloat[{subcaptions[i]}]{{{tabulars[i].dumps()}}}"))
+        table.append(NoEscape(r"}"))
         table.append(Command("quad"))
 
     table.add_caption(caption)
