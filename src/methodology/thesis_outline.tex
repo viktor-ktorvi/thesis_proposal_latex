@@ -1,0 +1,83 @@
+\subsection*{Thesis outline}
+
+In this section we will attempt to draw a rough outline of what the thesis will look like.
+The thesis will consist of the following sections:
+
+\begin{itemize}
+    \item Introduction
+    \begin{itemize}
+        \item What is the OPF problem?
+        \item Why is it important?
+        \item Further math details(some of the implementation details might belong in Methodology)
+        \begin{itemize}
+            \item Optimization problem statement
+            \item (Maybe) more physics explanations for CS people
+            \item How is the grid modelled?
+            Buses, generators, lines, admittance matrix, limits etc.
+            \item What are the constants and variables in the problem?
+            \item What are the node masks and why do they have the values that they have?
+            \item More\ldots
+        \end{itemize}
+        \item How is it solved conventionally and why that isn't good enough?
+        \item How can ML methods help?
+        \item Intro into (classical) ML methods for Power people.
+        \item Why can't classical ML methods handle multi-topology datasets?
+        \item What are graphs, graph neural networks and why are they well suited to fill the gap?
+        \item Why can't GNNs learn long range dependencies and why we speculate that those are crucial for solving the OPF problem?
+        \item What are graph transformers?
+        \begin{itemize}
+            \item What are transformers?
+            \item Vanilla transformers VS GNNs - Pros and Cons(expressivity, complexity)
+            \item What are positional, structural and relational encodings?
+        \end{itemize}
+        \item How can the problem be approached?(supervised/unsupervised)
+        \item More\ldots
+    \end{itemize}
+    \item Literature overview
+    \begin{itemize}
+        \item Which datasets do current works use and why are they inconsistent?
+        \item What metrics do they use and why are they not good enough?
+        \item Which models do they use?
+        \item What are the inputs and outputs of the models?
+    \end{itemize}
+    \item Methodology
+    \begin{itemize}
+        \item Datasets
+        \begin{itemize}
+            \item On which datasets are the models going to be trained on?
+            \item Description of the datasets(what kind of graphs, some graph stats, voltage level, single-/multi-topology, number of nodes, other info etc.
+            \item Data info - shapes and sizes, maybe $\pqva$ statistics.
+        \end{itemize}
+        \item Metrics
+        \begin{itemize}
+            \item What metrics am I going to use and why?
+            \item Units, pros, cons, aggregation, other info
+        \end{itemize}
+        \item Models
+        \begin{itemize}
+            \item Model pipeline (stuff that I have in the Appendix now)
+            \begin{itemize}
+                \item Pipeline diagram
+                \item Why do we standardize inputs and outputs?
+            \end{itemize}
+            \item On each model (starting from Linear$_{local}$ and increasing the complexity incrementally)
+            \begin{itemize}
+                \item Diagram
+                \item What are the inputs and outputs?
+                \item What's the math behind it?
+                \item What's the motivation behind applying it
+                \item Hyperparameters and implementation details (maybe here, maybe in the Appendix)
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}
+    \item Discussion
+    \begin{itemize}
+        \item What results did all the trained models achieve?
+        \item Which are good, which are bad?
+        \item What were the difficulties?
+        \item What do the results mean?
+        \item What is a satisfying result?
+        \item Are the results satisfying?
+    \end{itemize}
+    \item Conclusion
+\end{itemize}
