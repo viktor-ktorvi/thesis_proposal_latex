@@ -49,4 +49,30 @@ medium voltage grids - like paths hundreds of nodes long.
 The models that achieve good results on those benchmarks(usually graph transformers)
 have potential to perform well on our task as well.
 
-\textcolor{red}{TODO - a sort of list of models I want to implement}
+Based on this, the following lists the models I want to implement by the end of the thesis,
+along with comments on why and how well I understand the approach:
+\begin{itemize}
+    \item Vanilla transformer~\cite{vaswani2017attention} - starting \("\)simple\("\) in terms of transformers, I want to
+    see what the results will be using just stacked transformer encoders with no additional graph
+    encodings, sort of in a deep sets way.
+    I understand this approach relatively well.
+    \item Transformer + graph encodings - moving on to thinking about different positional and structural encodings
+    and appending them to the node embeddings before feeding them into the transformer encoders.
+    I understand this approach well enough; it's the encodings that I'm not too familiar with and where I'll
+    divert most of the mental work.
+    \item GraphGPS~\cite{rampavsek2022recipe} - incorporating the previous approach with GNNs.
+    I understand the approach well; it's, again, the encodings that I'll need to study more deeply.
+\end{itemize}
+
+These were the methods which I understood fairly well and that I've devoted time to understand.
+The following are methods that I've come across that I find interesting, but don't understand at first glance
+and haven't devoted the time into understanding.
+I would like to dive deeper into them after implementing the previous ones.
+\begin{itemize}
+    \item Anything from this survey~\cite{muller2023attending}, as long as it's not too specialized for molecules.
+    \item Virtual nodes~\cite{cai2023connection} - haven't read the paper, but it ranks highly on the LRGB.
+    I've heard of virtual nodes but haven't seen them being used much, so I assumed that they'd just lead to oversmoothing
+    quickly.
+    I'd be very happy to see if they can be made to work.
+    \item Other top performers on the LRGB.
+\end{itemize}
